@@ -3,12 +3,13 @@
 @extends('layouts.app')
 
 @section('content')
-    @if (session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
     <div class="container mt-4">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Product List</h2>
             <!-- Favorite Count Badge -->
@@ -59,7 +60,7 @@
                             <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST"
                                 class="mb-2">
                                 @csrf
-                                
+
                                 <label for="quantity" class="mr-2 mt-4">Quantity:</label>
                                 <input type="number" name="quantity" min="1" value="1"
                                     class="form-control-sm mr-2">
