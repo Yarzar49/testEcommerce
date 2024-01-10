@@ -12,6 +12,12 @@ class Product extends Model
     /**
      * Relationship with favorites.
      */
+    
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
     public function favorites()
     {
         return $this->hasMany(Favorite::class);

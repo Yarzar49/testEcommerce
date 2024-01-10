@@ -3,17 +3,22 @@
 @extends('layouts.app')
 
 @section('content')
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2>Product List</h2>
             <!-- Favorite Count Badge -->
-            
+
 
             <div>
                 <a href="{{ route('products.favorites') }}" class="btn btn-warning">
                     Favorites
                     <span class="badge badge-dark" id="favoriteBadge"></span>
-    
+
                 </a>
                 <a href="{{ route('cart.show') }}" class="btn btn-primary" id="cartButton">
                     Cart
@@ -54,6 +59,7 @@
                             <form action="{{ route('cart.add', ['productId' => $product->id]) }}" method="POST"
                                 class="mb-2">
                                 @csrf
+                                
                                 <label for="quantity" class="mr-2 mt-4">Quantity:</label>
                                 <input type="number" name="quantity" min="1" value="1"
                                     class="form-control-sm mr-2">

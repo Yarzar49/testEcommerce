@@ -20,6 +20,7 @@
                     </div>
                     <div class="card-body">
                         <p><strong>Order ID:</strong> {{ $order->id }}</p>
+                        <p><strong>Invoice Number:</strong> {{ $order->invoice_number }}</p>
                         <p><strong>Total Amount:</strong> ${{ $order->total_amount }}</p>
                     </div>
                 </div>

@@ -83,14 +83,16 @@ class ProductController extends Controller
 
         if ($favorite) {
             $favorite->delete();
+            return redirect()->back()->with('success', 'Product removed from favorites.');
         } else {
             Favorite::create([
                 'user_id' => $user->id,
                 'product_id' => $productId,
             ]);
+            return redirect()->back()->with('success', 'Product added to favorites.');
         }
 
-        return redirect()->back()->with('success', 'Favorite status updated successfully');
+        
     }
 
     public function favorites()

@@ -20,14 +20,14 @@ class CheckoutController extends Controller
         // Validate the form data (add your validation rules here)
         // Validate the incoming request data
         $request->validate([
-            'invoice_number' => 'required|string|unique:orders,invoice_number',
+
             'additional_notes' => 'nullable|string',
             'shipping_address' => 'required|string',
             'billing_address' => 'required|string',
             'placed_at' => 'required|date',
             // Add more validation rules for other fields if needed
         ]);
- 
+
         // Process the order (store in the database, etc.)
         $user = auth()->user();
         $cartItems = Cart::where('user_id', $user->id)->get();
@@ -47,11 +47,19 @@ class CheckoutController extends Controller
             return 0; // or any default value if the product is not found
         });
 
+        // Get the latest order ID including soft-deleted records
+        $latestOrderId = Order::withTrashed()->latest('id')->value('id');
+    
+        // Format the order ID to include leading zeros if needed
+        $formattedOrderId = sprintf('%04d', $latestOrderId+1);
+        // Generate the invoice number (e.g., order01)
+        $invoiceNumber = 'order' . $formattedOrderId;
+
         // Create an order
         $order = Order::create([
             'user_id' => $user->id,
             'total_amount' => $totalAmount,
-            'invoice_number' => $request->input('invoice_number'),
+            'invoice_number' => $invoiceNumber,
             'additional_notes' => $request->input('additional_notes'),
             'shipping_address' => $request->input('shipping_address'),
             'billing_address' => $request->input('billing_address'),

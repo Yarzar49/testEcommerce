@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\FavoriteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/products/{product}/toggle-favorite', [App\Http\Controllers\ProductController::class, 'toggleFavorite'])->name('products.toggleFavorite');
 
-    
+
     Route::get('/products/favorite-count', [App\Http\Controllers\ProductController::class, 'favoriteCount'])->name('products.favoriteCount');
 
     Route::get('/products/favorites', [ProductController::class, 'favorites'])
@@ -63,13 +64,16 @@ Route::group(['middleware' => 'auth'], function () {
     /** Order Routes */
     // Route::get('/orders/{order}', [App\Http\Controllers\OrderController::class, 'show'])->name('orders.show');
     // Route::get('/payment-page/{order}', [App\Http\Controllers\OrderController::class, 'show'])->name('payment.page');
+    Route::get('/payment-page/{orderId}', [App\Http\Controllers\OrderController::class, 'show'])->name('payment.page');
     /** End of Order Routes */
 
     /** Checkout order Routes */
     Route::get('/checkout', [CheckoutController::class, 'showCheckoutForm'])->name('checkout.form');
     Route::post('/place-order', [CheckoutController::class, 'placeOrder'])->name('place.order');
-    Route::get('/payment-page/{orderId}', [App\Http\Controllers\OrderController::class, 'show'])->name('payment.page');
     /** End of Checkout Order Routes */
 
-    // Route::get('/test', [App\Http\Controllers\HomeController::class, 'test'])->name('test');
+    /** Favorites Routes */
+    Route::post('/favorites/{favorite}/add-to-cart', [FavoriteController::class, 'addToCart'])->name('favorites.addToCart');
+    Route::delete('/favorites/{favorite}/remove', [FavoriteController::class, 'removeFromFavorites'])->name('favorites.removeFromFavorites');
+    /**End of Favorites Routes */
 });
